@@ -77,7 +77,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.boxbreathing"
+    namespace "com.threadpooldev.boxbreathing"
     defaultConfig {
         applicationId "com.boxbreathing"
         minSdkVersion rootProject.ext.minSdkVersion
