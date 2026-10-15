@@ -1,39 +1,46 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { useState } from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { HomeScreen } from './src/screens/HomeScreen';
+import { BreathingScreen } from './src/screens/BreathingScreen';
+import { SettingsScreen } from './src/screens/SettingsScreen';
+import { CompletionScreen } from './src/screens/CompletionScreen';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+type Screen = 'home' | 'settings' | 'breathing' | 'completion';
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+export default function App() {
+  const [screen, setScreen] = useState<Screen>('home');
+  const [phaseDuration, setPhaseDuration] = useState(4);
+  const [sessionDurationMinutes, setSessionDurationMinutes] = useState(5);
 
   return (
     <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
+      {screen === 'settings' ? (
+        <SettingsScreen
+          phaseDuration={phaseDuration}
+          sessionDurationMinutes={sessionDurationMinutes}
+          onPhaseDurationChange={setPhaseDuration}
+          onSessionDurationChange={setSessionDurationMinutes}
+          onBack={() => setScreen('home')}
+        />
+      ) : screen === 'breathing' ? (
+        <BreathingScreen
+          phaseDuration={phaseDuration}
+          sessionDurationMinutes={sessionDurationMinutes}
+          onComplete={() => setScreen('completion')}
+          onEnd={() => setScreen('home')}
+        />
+      ) : screen === 'completion' ? (
+        <CompletionScreen
+          sessionDurationMinutes={sessionDurationMinutes}
+          onAgain={() => setScreen('breathing')}
+          onHome={() => setScreen('home')}
+        />
+      ) : (
+        <HomeScreen
+          onStart={() => setScreen('breathing')}
+          onSettings={() => setScreen('settings')}
+        />
+      )}
     </SafeAreaProvider>
   );
 }
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen templateFileName="App.tsx" safeAreaInsets={safeAreaInsets} />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
-
-export default App;

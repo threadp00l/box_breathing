@@ -1,4 +1,4 @@
-com.threadpooldev.boxbreathing
+package com.threadpooldev.boxbreathing
 
 import android.app.Application
 import com.facebook.react.PackageList
